@@ -1,0 +1,24 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock title %}
+
+{% block contenido %}
+
+
+    <div class="container">
+        <h1 class="display-1">Inicio Sesion</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button>
+                Iniciar Sesion
+            </button>
+          </form>
+    </div>
+    {{error}}
+
+
+{% endblock %}
+

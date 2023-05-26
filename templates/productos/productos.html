@@ -1,0 +1,58 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock %}
+
+{% block contenido %}
+  <h1>Productos</h1>
+
+
+
+  {% if productos %}
+    <div class="container text-center">
+      <div class="table-responsive bg-light mb-3">
+        <table id="example" class="table table-secondary display" style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Tipo de producto</th>
+              <th scope="col">Valor unitario</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for producto in productos %}
+              <tr>
+                <td scope="row">{{ producto.id }}</td>
+                <td scope="row">{{ producto.nombre }}</td>
+                <td scope="row">{{ producto.tipo_producto }}</td>
+                <td scope="row">{{ producto.valor_unitario }}</td>
+                <td scope="row">{{ producto.cantidad }}</td>
+              
+                <td>
+                  <a href="{% url 'editarProductos' id=producto.id %}" class="btn btn-warning">Editar</a>
+                  <a href="{% url 'borrarProductos' id=producto.id %}" class="btn btn-primary">Borrar</a>
+
+
+
+             
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  {% else %}
+    <p>No hay productos disponibles.</p>
+  {% endif %}
+  <a href="{%url 'ingresarProductos'%}" class="btn btn-primary">Ingresar Producto</a>
+ 
+
+
+  
+{% endblock %}

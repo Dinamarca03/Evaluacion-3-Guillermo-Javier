@@ -1,0 +1,51 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock %}
+
+{% block contenido %}
+  <h1>Devoluciones</h1>
+
+
+
+  {% if devoluciones %}
+    <div class="container text-center">
+      <div class="table-responsive bg-light mb-3">
+        <table id="example" class="table table-secondary display" style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre del producto</th>
+              <th scope="col">Tipo de producto</th>
+              <th scope="col">fecha</th>
+              <th scope="col">Hora</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for devolucion in devoluciones %}
+              <tr>
+                <td scope="row">{{ devolucion.id }}</td>
+                <td scope="row">{{ devolucion.nombre_producto }}</td>
+                <td scope="row">{{ devolucion.fecha }}</td>
+                <td scope="row">{{ devolucion.hora }}</td>
+                <td scope="row">{{ devolucion.cantidad }}</td>
+              
+                <td>
+                  <a href="/editarCirugia/{{ devolucion.id }}" class="btn btn-warning">Editar</a>
+                  <a href="{% url 'borrarDevoluciones' id=devolucion.id %}" class="btn btn-primary">Borrar</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  {% else %}
+    <p>No hay productos disponibles.</p>
+  {% endif %}
+<a href="{%url 'ingresarDevoluciones'%}" class="btn btn-primary">Ingresar Devoluciones</a>
+{% endblock %}

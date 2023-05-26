@@ -1,0 +1,47 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock %}
+
+{% block contenido %}
+  <h1>Sucursales</h1>
+
+  {% if sucursales %}
+    <div class="container text-center">
+      <div class="table-responsive bg-light mb-3">
+        <table id="example" class="table table-secondary display" style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">nombre sucursal</th>
+              <th scope="col">Direccion</th>
+              <th scope="col">numero de telefono</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sucursal in sucursales %}
+              <tr>
+                <td scope="row">{{ sucursal.id }}</td>
+                <td scope="row">{{ sucursal.nombre_sucursal }}</td>
+                <td scope="row">{{ sucursal.direccion }}</td>
+                <td scope="row">{{ sucursal.numero_telefono }}</td>
+         
+                <td>
+                  <a href="/editarCirugia/{{ devolucion.id }}" class="btn btn-warning">Editar</a> 
+                  <a href="{% url 'borrarSucursales' id=sucursal.id %}" class="btn btn-danger">Borrar</a>
+
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p>No hay sucursales disponibles.</p>
+  {% endif %}
+  
+  <a href="{% url 'ingresarSucursales' %}" class="btn btn-primary">Ingresar sucursales</a>
+{% endblock %}

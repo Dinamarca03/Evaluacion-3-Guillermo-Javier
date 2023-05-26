@@ -1,0 +1,29 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock title %}
+
+{% block contenido %}
+
+<h1>Ingresar Sucursal</h1>
+
+<div class="container">
+    {{error}}
+    
+    <form action="/ingresarSucursales/" method="POST">
+        {% csrf_token %}
+
+        {{form.as_p}}
+
+
+        <button>
+            Ingresar
+        </button>
+        
+    </form>
+</div>
+
+
+{% endblock %}
+

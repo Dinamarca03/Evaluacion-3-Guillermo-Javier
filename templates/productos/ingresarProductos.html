@@ -1,0 +1,29 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock title %}
+
+{% block contenido %}
+
+<h1>Ingresar Productos</h1>
+
+<div class="container">
+    {{error}}
+    
+    <form action="/ingresarProductos/" method="POST">
+        {% csrf_token %}
+
+        {{form.as_p}}
+
+        <button>
+            Ingresar
+        </button>
+        
+        <input type="submit" class="btn btn-success float-end" value="Ingresar producto" >
+    </form>
+</div>
+
+
+{% endblock %}
+
