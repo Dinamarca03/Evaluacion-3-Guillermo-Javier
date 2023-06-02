@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 
 class producto(models.Model):
-    id = models.IntegerField
     nombre = models.CharField(max_length=100)
     tipo_producto = models.CharField(max_length=50)
     valor_unitario = models.IntegerField()
@@ -13,7 +12,6 @@ class producto(models.Model):
         return self.nombre
     
 class devolucion(models.Model):
-    id = models.IntegerField
     nombre_producto = models.CharField(max_length=100)
     fecha = models.CharField(max_length=100)
     hora = models.CharField(max_length=50)

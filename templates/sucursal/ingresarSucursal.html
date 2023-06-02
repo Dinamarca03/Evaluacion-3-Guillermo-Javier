@@ -11,7 +11,7 @@ Bambini
 <div class="container">
     {{error}}
     
-    <form action="/ingresarSucursales/" method="POST">
+    <form method="POST"> 
         {% csrf_token %}
 
         {{form.as_p}}

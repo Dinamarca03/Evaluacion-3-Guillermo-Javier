@@ -30,6 +30,7 @@ urlpatterns = [
 
     path('sucursales/', sucursales, name= 'sucursales'),
     path('ingresarSucursales/', ingresarSucursales, name= 'ingresarSucursales'),
+    path('editarSucursales/<int:id>', editarSucursales, name= 'editarSucursales'),
     path('borrarSucursales/<int:id>', borrarSucursales, name= 'borrarSucursales'),
 
 
@@ -44,6 +45,7 @@ urlpatterns = [
     path('devoluciones/', devoluciones, name= 'devoluciones'),
     path('ingresarDevoluciones/', ingresarDevoluciones, name= 'ingresarDevoluciones'),
     path('borrarDevoluciones/<int:id>', borrarDevoluciones, name= 'borrarDevoluciones'),
+    path('editarDevoluciones/<int:id>', editarDevoluciones, name= 'editarDevoluciones'),
 
     
 

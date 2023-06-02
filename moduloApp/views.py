@@ -93,6 +93,22 @@ def borrarSucursales(request, id):
     sucursales.delete()
     return redirect('/sucursales')
 
+def editarSucursales(request, id):
+    SUCURSALES = sucursal.objects.get(id=id)
+    print(sucursal)
+    data = {
+        'form': ingresarSucursalesForm(instance=SUCURSALES),
+        'titulo': 'Editar ficha de sucursal'
+    }
+    if (request.method == 'POST'):
+        form = ingresarSucursalesForm(request.POST, instance=SUCURSALES)
+        if (form.is_valid()):
+            form.save()
+            return redirect('/sucursales')
+        else:
+            data['form'] = form
+    return render(request, 'sucursal/ingresarSucursal.html',data)
+
 
 
 
@@ -119,11 +135,20 @@ def borrarProductos(request, id):
     return redirect('/productos')
 
 def editarProductos(request, id):
-
-
-
-
-
+    PRODUCTOS = producto.objects.get(id=id)
+    print(producto)
+    data = {
+        'form':ingersarProductosForm(instance=PRODUCTOS), 
+        'titulo':'Editar ficha de Producto'
+        }
+    if (request.method == 'POST'):
+        form = ingersarProductosForm(request.POST, instance=PRODUCTOS)
+        if (form.is_valid()):
+            form.save()
+            return redirect('/productos')
+        else:
+            data['form'] = form
+    return render(request, 'productos/ingresarProductos.html', data)
 
 
 
@@ -160,4 +185,18 @@ def borrarDevoluciones(request, id):
     devoluciones.delete()
     return redirect('/devoluciones')
  
-
+def editarDevoluciones(request, id):
+    DEVOLUCION = devolucion.objects.get(id=id)
+    print(devolucion)
+    data = {
+        'form': ingresarDevolucionesForm(instance=DEVOLUCION),
+        'titulo': 'Editar ficha de devolución'
+    }
+    if request.method == 'POST':
+        form = ingresarDevolucionesForm(request.POST, instance=DEVOLUCION)
+        if form.is_valid():
+            form.save()
+            return redirect('/devoluciones')
+        else:
+            data['form'] = form
+    return render(request, 'devoluciones/ingresarDevoluciones.html', data)

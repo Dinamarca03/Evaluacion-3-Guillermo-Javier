@@ -33,7 +33,7 @@ Bambini
                 <td scope="row">{{ devolucion.cantidad }}</td>
               
                 <td>
-                  <a href="/editarCirugia/{{ devolucion.id }}" class="btn btn-warning">Editar</a>
+                  <a href="{% url 'editarDevoluciones' id=devolucion.id %}" class="btn btn-warning">Editar</a>
                   <a href="{% url 'borrarDevoluciones' id=devolucion.id %}" class="btn btn-primary">Borrar</a>
                 </td>
               </tr>

@@ -11,7 +11,7 @@ Bambini
 <div class="container">
     {{error}}
     
-    <form action="/ingresarProductos/" method="POST">
+    <form method="POST"> 
         {% csrf_token %}
 
         {{form.as_p}}
@@ -20,7 +20,6 @@ Bambini
             Ingresar
         </button>
         
-        <input type="submit" class="btn btn-success float-end" value="Ingresar producto" >
     </form>
 </div>
 
