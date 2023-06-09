@@ -20,13 +20,13 @@ from moduloApp.views import * #Todos los elementos de la vista
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index'),
+    path('index/', index, name='index'),
   
     
     path('registrar/', registrar, name= 'registrar'),
     path('proveedor/', proveedor, name= 'proveedor'),
     path('cerrarSesion/', cerrarSesion, name= 'cerrarSesion'),
-    path('inicioSesion/', inicioSesion, name= 'inicioSesion'),
+    path('', inicioSesion, name= 'inicioSesion'),
 
     path('sucursales/', sucursales, name= 'sucursales'),
     path('ingresarSucursales/', ingresarSucursales, name= 'ingresarSucursales'),
