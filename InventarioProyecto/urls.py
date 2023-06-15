@@ -47,6 +47,10 @@ urlpatterns = [
     path('borrarDevoluciones/<int:id>', borrarDevoluciones, name= 'borrarDevoluciones'),
     path('editarDevoluciones/<int:id>', editarDevoluciones, name= 'editarDevoluciones'),
 
+
+
+     path('cambios/', historial, name='historial'),
+
     
 
 

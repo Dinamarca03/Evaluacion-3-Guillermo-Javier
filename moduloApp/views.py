@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from .forms import *
 from .models import *
 from django.contrib import messages
+from django.shortcuts import render
 
 # Create your views here.
 
@@ -201,3 +202,12 @@ def editarDevoluciones(request, id):
         else:
             data['form'] = form
     return render(request, 'devoluciones/ingresarDevoluciones.html', data)
+
+
+
+
+def historial (request):
+    # Lógica para obtener los cambios realizados
+    cambios = ObtenerHitorial()  # Implementa tu propia lógica aquí
+    
+    return render(request, 'historial.html', {'cambios': cambios})

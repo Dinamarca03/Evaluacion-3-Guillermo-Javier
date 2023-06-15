@@ -7,8 +7,6 @@ Bambini
 {% block contenido %}
   <h1>Productos</h1>
 
-
-
   {% if productos %}
     <div class="container text-center">
       <div class="table-responsive bg-light mb-3">
@@ -31,14 +29,11 @@ Bambini
                 <td scope="row">{{ producto.tipo_producto }}</td>
                 <td scope="row">{{ producto.valor_unitario }}</td>
                 <td scope="row">{{ producto.cantidad }}</td>
-              
                 <td>
                   <a href="{% url 'editarProductos' id=producto.id %}" class="btn btn-warning">Editar</a>
-                  <a href="{% url 'borrarProductos' id=producto.id %}" class="btn btn-primary">Borrar</a>
-
-
-
-             
+                  <button type="button" class="btn btn-primary" onclick="mostrarConfirmacionBorrado({{ producto.id }})">
+                    Borrar
+                  </button>
                 </td>
               </tr>
             {% endfor %}
@@ -46,13 +41,41 @@ Bambini
         </table>
       </div>
     </div>
-
   {% else %}
     <p>No hay productos disponibles.</p>
   {% endif %}
-  <a href="{%url 'ingresarProductos'%}" class="btn btn-primary">Ingresar Producto</a>
- 
 
+  <a href="{% url 'ingresarProductos' %}" class="btn btn-primary">Ingresar Producto</a>
 
-  
+  <!-- Cuadro de diálogo modal -->
+  <div class="modal fade" id="confirmacionBorradoModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionBorradoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmacionBorradoModalLabel">Confirmación de Borrado</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>¿Estás seguro de que deseas borrar este producto?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmarBorradoBtn">Borrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mostrarConfirmacionBorrado(productoId) {
+      var confirmarBorradoBtn = document.getElementById('confirmarBorradoBtn');
+      confirmarBorradoBtn.addEventListener('click', function() {
+        var url = "{% url 'borrarProductos' id=0 %}".replace('0', productoId);
+        window.location.href = url;
+      });
+      $('#confirmacionBorradoModal').modal('show');
+    }
+  </script>
 {% endblock %}

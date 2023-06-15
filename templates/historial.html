@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cambios Realizados</title>
+</head>
+<body>
+    <h1>Cambios Realizados</h1>
+    <ul>
+    {% for cambio in cambios %}
+        <li>{{ cambio }}</li>
+    {% empty %}
+        <li>No se encontraron cambios</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
