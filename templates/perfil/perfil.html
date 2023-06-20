@@ -1,0 +1,27 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock title %}
+
+{% block contenido %}
+
+<h1>Mi perfil</h1>
+
+<div class="container">
+    {{error}}
+    
+    <form method="POST"> 
+        {% csrf_token %}
+
+        {{form.as_p}}
+
+
+
+        
+    </form>
+</div>
+
+
+{% endblock %}
+

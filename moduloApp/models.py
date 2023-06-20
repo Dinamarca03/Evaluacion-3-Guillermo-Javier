@@ -8,6 +8,7 @@ class producto(models.Model):
     valor_unitario = models.IntegerField()
     cantidad = models.IntegerField()
 
+
     def __str__(self):
         return self.nombre
     

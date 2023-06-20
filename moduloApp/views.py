@@ -153,14 +153,6 @@ def editarProductos(request, id):
     return render(request, 'productos/ingresarProductos.html', data)
 
 
-
-
-
-
-
-
-
-
 def devoluciones (request):
     devoluciones = devolucion.objects.all()
     return render(request, 'devoluciones/devoluciones.html.',{'devoluciones':devoluciones})
@@ -204,10 +196,8 @@ def editarDevoluciones(request, id):
     return render(request, 'devoluciones/ingresarDevoluciones.html', data)
 
 
+def perfil(request):
+    return render(request, 'perfil/perfil.html')
 
 
-def historial (request):
-    # Lógica para obtener los cambios realizados
-    cambios = ObtenerHitorial()  # Implementa tu propia lógica aquí
-    
-    return render(request, 'historial.html', {'cambios': cambios})
+
