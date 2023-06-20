@@ -31,12 +31,37 @@ Bambini
                 <td scope="row">{{ producto.cantidad }}</td>
                 <td>
                   <a href="{% url 'editarProductos' id=producto.id %}" class="btn btn-warning">Editar</a>
-                  <button type="button" class="btn btn-primary" onclick="mostrarConfirmacionBorrado({{ producto.id }})">
-                    Borrar
-                  </button>
+                  <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionBorradoModal{{ producto.id }}">Borrar</a>
                 </td>
               </tr>
+              
+              <!-- Cuadro de diálogo modal -->
+              <div class="modal fade" id="confirmacionBorradoModal{{ producto.id }}" tabindex="-1" role="dialog" aria-labelledby="confirmacionBorradoModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="confirmacionBorradoModalLabel">Confirmación de Borrado</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p>¿Estás seguro de que deseas borrar este producto?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <a href="{% url 'borrarProductos' id=producto.id %}" type="button" class="btn btn-danger" id="confirmarBorrado">Borrar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
             {% endfor %}
+            <div class="container">
+              <div class="row">
+                <button id="confirmacion" class="btn btn-outline-primary btn-lg btn-block"></button>  
+              </div>
+            </div>
           </tbody>
         </table>
       </div>
@@ -46,36 +71,18 @@ Bambini
   {% endif %}
 
   <a href="{% url 'ingresarProductos' %}" class="btn btn-primary">Ingresar Producto</a>
-
-  <!-- Cuadro de diálogo modal -->
-  <div class="modal fade" id="confirmacionBorradoModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionBorradoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="confirmacionBorradoModalLabel">Confirmación de Borrado</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>¿Estás seguro de que deseas borrar este producto?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" id="confirmarBorradoBtn">Borrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function mostrarConfirmacionBorrado(productoId) {
-      var confirmarBorradoBtn = document.getElementById('confirmarBorradoBtn');
-      confirmarBorradoBtn.addEventListener('click', function() {
-        var url = "{% url 'borrarProductos' id=0 %}".replace('0', productoId);
-        window.location.href = url;
-      });
-      $('#confirmacionBorradoModal').modal('show');
-    }
-  </script>
+  
 {% endblock %}
+
+<script>
+  // Captura el evento de confirmar el borrado y actualiza el enlace de borrado real
+  $('.modal-footer #confirmarBorrado').on('click', function(event) {
+    event.preventDefault();
+    var link = $(this).attr("href");
+    $('#confirmacionBorradoModal').modal('hide');
+    // Muestra la alerta de confirmación nuevamente para evitar borrar accidentalmente al hacer clic en "Cancelar" en la alerta
+    $('#confirmacionBorradoModal').on('hidden.bs.modal', function() {
+      window.location.href = link;
+    });
+  });
+</script>
