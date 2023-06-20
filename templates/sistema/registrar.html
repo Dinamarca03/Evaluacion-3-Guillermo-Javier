@@ -40,25 +40,50 @@
         {%endblock navbar%}
 
         <!-- Se carga el formulario -->
-        <div class="container">
-            <h1>
-                
-                <h1 class="display-1">Registrar</h1>
-                <form method="POST">
-                {% csrf_token %}
-                {{form.as_p}}
-                <button>
-                    Registrar
-                </button>
-                </form>
-    
-            </h1>
-            
-        </div>
-        <!-- Muestra los errores -->
-        <div class="container">
-            <h1>{{error}}</h1>
-        </div>
+        <main class="container">
+            <div class="row">
+                <div class="col-md-10">
+                    <form method="POST" class="card card-body ">
+                        <h1 class="display-1 text-center">Registrate</h1>
+                        {{error}}
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="Nombre">Nombre</label>
+                            <input type="text" name="Nombre" id="Nombre" class="form-control" placeholder="Escriba su nombre">                      
+                        </div>
+                        <div class="mb-3">
+                            <label for="Apellido">Apellido</label>
+                            <input type="text" name="Apellido" id="Apellido" class="form-control" placeholder="Escriba su apellido">                      
+                        </div>
+                        <div class="mb-3">
+                            <label for="Direccion">Direccion</label>
+                            <input type="text" name="Direccion" id="Direccion" class="form-control" placeholder="Escriba su direccion">                      
+                        </div>
+                        <div class="mb-3">
+                            <label for="username">Rut (id de usuario):</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Escriba su Rut">                      
+                        </div>
+                        <div class="mb-3">
+                            <label for="password1">Contraseña:</label>
+                            <input type="password" name="password1" id="password1" class="form-control" placeholder="Escriba su contraseña">                      
+                        </div>
+                        <div class="mb-3">
+                            <label for="password2">Confirmar contraseña:</label>
+                            <input type="password" name="password2" id="password2" class="form-control" placeholder="Confirme su contraseña">                      
+                        </div>
+
+                        <button class="btn btn-primary">
+                            Registrar
+                        </button>
+                    </form>
+                </div>
+            </div>
+ 
+
+
+
+        </main>
+
    
         <div class="container-fluid py-4">
 
