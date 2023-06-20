@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class producto(models.Model):
@@ -27,3 +27,13 @@ class sucursal(models.Model):
 
     def __str__(self):
         return self.nombre_sucursal
+    
+class Rol(models.Model):
+    USUARIO = 'US'
+    ADMIN = 'AD'
+    ROLES_CHOICES = [
+        (USUARIO, 'Usuario'),
+        (ADMIN, 'Administrador'),
+    ]
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    rol = models.CharField(max_length=2, choices=ROLES_CHOICES, default=USUARIO)

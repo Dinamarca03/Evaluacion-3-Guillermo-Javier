@@ -7,8 +7,6 @@ Bambini
 {% block contenido %}
   <h1>Productos</h1>
 
-
-
   {% if productos %}
     <div class="container text-center">
       <div class="table-responsive bg-light mb-3">
@@ -35,10 +33,6 @@ Bambini
                 <td>
                   <a href="{% url 'editarProductos' id=producto.id %}" class="btn btn-warning">Editar</a>
                   <a href="{% url 'borrarProductos' id=producto.id %}" class="btn btn-primary">Borrar</a>
-
-
-
-             
                 </td>
               </tr>
             {% endfor %}
@@ -46,13 +40,8 @@ Bambini
         </table>
       </div>
     </div>
-
   {% else %}
     <p>No hay productos disponibles.</p>
   {% endif %}
-  <a href="{%url 'ingresarProductos'%}" class="btn btn-primary">Ingresar Producto</a>
- 
-
-
-  
+  <a href="{% url 'ingresarProductos' %}" class="btn btn-primary">Ingresar Producto</a>
 {% endblock %}

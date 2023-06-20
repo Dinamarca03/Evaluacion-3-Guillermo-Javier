@@ -6,6 +6,9 @@ from django.http import HttpResponse
 from .forms import *
 from .models import *
 from django.contrib import messages
+from .forms import CustomUserCreationForm
+from .models import Rol
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -13,35 +16,25 @@ def index(request):
     return render(request, 'sistema/index.html')
 #Registrar usuario
 def registrar(request):
-
     if request.method == 'GET':
-        return render(request, 'sistema/registrar.html', 
-        {
-            'form': UserCreationForm
-        })
-        
+        form = CustomUserCreationForm()
+        return render(request, 'sistema/registrar.html', {'form': form})
     else:
-        if request.POST['password1'] == request.POST['password2']:
-            #Registrar usuario
-            try:
-                user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
-                user.save()
-                login(request, user)
-                return redirect('index') #redirecciona al index una vez el usuario fue creado con exito
-            except:
-                return render(request, 'sistema/registrar.html', 
-                {
-                    'form': UserCreationForm,
-                    "error": 'Usuario ya existe'
-                })
-            
-
-        return render(request, 'sistema/registrar.html', 
-                {
-                    'form': UserCreationForm,
-                    "error": 'Contraseñas no coinciden'
-                })
-
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['password1'] == form.cleaned_data['password2']:
+                try:
+                    user = form.save()
+                    rol = Rol(usuario=user, rol=form.cleaned_data['rol'])
+                    rol.save()
+                    login(request, user)
+                    return redirect('index')
+                except:
+                    return render(request, 'sistema/registrar.html', {'form': form, "error": 'Usuario ya existe'})
+            else:
+                return render(request, 'sistema/registrar.html', {'form': form, "error": 'Contraseñas no coinciden'})
+        else:
+            return render(request, 'sistema/registrar.html', {'form': form})
 
 
 #proveedor
@@ -135,21 +128,24 @@ def borrarProductos(request, id):
     productos.delete()
     return redirect('/productos')
 
+
 def editarProductos(request, id):
-    PRODUCTOS = producto.objects.get(id=id)
-    print(producto)
+    PRODUCTO = producto.objects.get(id=id)
     data = {
-        'form':ingersarProductosForm(instance=PRODUCTOS), 
-        'titulo':'Editar ficha de Producto'
-        }
-    if (request.method == 'POST'):
-        form = ingersarProductosForm(request.POST, instance=PRODUCTOS)
-        if (form.is_valid()):
+        'form': ingersarProductosForm(instance=PRODUCTO), 
+        'titulo': 'Editar ficha de Producto'
+    }
+
+    if request.method == 'POST':
+        form = ingersarProductosForm(request.POST, instance=PRODUCTO)
+        if form.is_valid():
             form.save()
             return redirect('/productos')
         else:
             data['form'] = form
+
     return render(request, 'productos/ingresarProductos.html', data)
+
 
 
 
