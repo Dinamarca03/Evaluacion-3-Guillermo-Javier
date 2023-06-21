@@ -21,7 +21,7 @@ from moduloApp.views import * #Todos los elementos de la vista
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', index, name='index'),
-  
+    path('perfil/', perfil, name='perfil'),
     
     path('registrar/', registrar, name= 'registrar'),
     path('proveedor/', proveedor, name= 'proveedor'),

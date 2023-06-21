@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm,PasswordChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponse
@@ -9,6 +9,7 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm
 from .models import Rol
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 
 # Create your views here.
 
@@ -36,7 +37,20 @@ def registrar(request):
         else:
             return render(request, 'sistema/registrar.html', {'form': form})
 
-
+@login_required
+def perfil(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Contraseña actualizada con éxito.')
+            return redirect('perfil')
+        else:
+            messages.error(request, 'Por favor, corrija los errores.')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'sistema/perfil.html', {'form': form})
 #proveedor
 def proveedor(request):
     return render(request, 'sistema/proveedor.html')
@@ -46,6 +60,7 @@ def cerrarSesion(request):
     return redirect('index')
 
 def inicioSesion(request):
+
     if request.method == 'GET':
         return render(request, 'sistema/inicioSesion.html', {
             'form': AuthenticationForm()
@@ -63,6 +78,8 @@ def inicioSesion(request):
             return render(request, 'sistema/inicioSesion.html', {
                 'form': AuthenticationForm()
             })
+
+
 
 def sucursales(request):
    # return render(request, 'sucursal/sucursales.html')
@@ -127,7 +144,6 @@ def borrarProductos(request, id):
     productos = producto.objects.get(id=id)
     productos.delete()
     return redirect('/productos')
-
 
 def editarProductos(request, id):
     PRODUCTO = producto.objects.get(id=id)
