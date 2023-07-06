@@ -1,0 +1,25 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Reportes
+{% endblock title %}
+
+{% block contenido %}
+
+  
+</div>
+<div class="card w-50 text-center mx-12">
+  <h1 class="display-1 ">Generar Reportes</h1>
+  <div class="row justify-content-center my-2">
+    <div class="col-7">
+      <a href="{% url 'generar_reporte_productos' %}" class="btn btn-primary btn-block">Generar Reporte de stock</a>
+      <a href="{% url 'generar_reporte_sucursales' %}" class="btn btn-primary btn-block">Generar Reporte de Sucursales</a>
+      <a href="{% url 'generar_reporte_devoluciones' %}" class="btn btn-primary btn-block">Generar Reporte de Devoluciones</a>
+      <a href="{% url 'generar_reporte2' %}" class="btn btn-primary btn-block">Generar Reporte de historial de entrada</a>
+      <a href="{% url 'generar_reporte' %}" class="btn btn-primary btn-block">Generar Reporte de historial de salida</a>
+    </div>
+  </div>
+</div>
+
+
+{% endblock contenido %}

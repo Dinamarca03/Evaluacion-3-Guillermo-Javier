@@ -1,28 +1,50 @@
 {% extends "sistema/base.html" %}
 
 {% block title %}
-Bambini
+Ingreso de Productos
 {% endblock title %}
 
 {% block contenido %}
 
-<h1>Ingresar Productos</h1>
-
-<div class="container">
-    {{error}}
+<div class="container card mt-5">
+    {{ error }}
     
-    <form method="POST"> 
+    <form method="POST" class="my-3" id="editarProductos">
+        <h1 class="text-center display-3 mb-5">Ingresar productos</h1>
+
         {% csrf_token %}
 
-        {{form.as_p}}
+        {{ form.as_p }}
 
-        <button>
+        <a href="{% url 'productos' %}" class="btn btn-dark" >Volver</a>
+
+        <button class="btn btn-primary float-right" type="submit">
             Ingresar
         </button>
-        
+
     </form>
 </div>
 
+<script>
+    document.getElementById('editarProductos').addEventListener('submit', function(event) {
+        event.preventDefault();
+        showAlertAfterSubmit();
+    });
+
+    function showAlertAfterSubmit() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Cambios guardados con éxito',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        setTimeout(function() {
+            document.getElementById('editarProductos').submit();
+        }, 1100);
+    }
+</script>
+
 
 {% endblock %}
-

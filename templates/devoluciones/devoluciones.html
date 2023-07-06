@@ -1,51 +1,140 @@
 {% extends "sistema/base.html" %}
 
 {% block title %}
-Bambini
+Devoluciones
 {% endblock %}
 
 {% block contenido %}
-  <h1>Devoluciones</h1>
-
-
+  <h1>Historial de Devoluciones</h1>
 
   {% if devoluciones %}
     <div class="container text-center">
       <div class="table-responsive bg-light mb-3">
-        <table id="example" class="table table-secondary display" style="width:100%">
+        <table id="example" class="table table-bordered table-striped" style="width:100%">
           <thead>
             <tr>
               <th scope="col">ID</th>
+              <th scope="col">ID venta</th>
               <th scope="col">Nombre del producto</th>
-              <th scope="col">Tipo de producto</th>
-              <th scope="col">fecha</th>
+              <th scope="col">ID producto</th> <!-- Agregar columna ID producto -->
+              <th scope="col">Cantidad</th>
+              <th scope="col">Fecha</th>
               <th scope="col">Hora</th>
-              <th scope="col">Acción</th>
+              <th scope="col">
+                {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                 Acción
+                {% endif %}
+              </th>
             </tr>
           </thead>
           <tbody>
             {% for devolucion in devoluciones %}
               <tr>
                 <td scope="row">{{ devolucion.id }}</td>
+                <td scope="row">{{ devolucion.id_venta_id }}</td>
                 <td scope="row">{{ devolucion.nombre_producto }}</td>
+                <td scope="row"><span id="id_producto">{{ devolucion.id_producto }}</span></td>
+                <td scope="row">{{ devolucion.cantidad }}</td>
                 <td scope="row">{{ devolucion.fecha }}</td>
                 <td scope="row">{{ devolucion.hora }}</td>
-                <td scope="row">{{ devolucion.cantidad }}</td>
-              
                 <td>
-                  <a href="{% url 'editarDevoluciones' id=devolucion.id %}" class="btn btn-warning">Editar</a>
-                  <a href="{% url 'borrarDevoluciones' id=devolucion.id %}" class="btn btn-primary">Borrar</a>
+                  {% if user.is_authenticated and user.rol.rol != 'US' %}
+                  <div class="row">
+                    <div class="col-3 m-2">
+                      <a href="{% url 'editarDevoluciones' id=devolucion.id cantidad=devolucion.cantidad %}" class="btn btn-warning">Editar</a>
+                    </div>
+                    <div class="col-3 m-2">
+                      <button href="#" id="confirmacionBorradoModal{{ devolucion.id }}" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionBorradoModal{{ devolucion.id }}">Borrar</button>
+                    </div>
+                  </div>
+                  {% endif %}
                 </td>
               </tr>
+
+              <!-- alerta de confirmacion -->
+              <script>
+                $(document).ready(function() {
+                  $('#confirmacionBorradoModal{{ devolucion.id }}').click(function() {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                      customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                      },
+                      buttonsStyling: false
+                    });
+                    swalWithBootstrapButtons.fire({
+                      title: '¿Estás seguro de que deseas eliminar esta devolución?',
+                      text: "¡No podrás revertir esto!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonText: 'Sí, borrar',
+                      cancelButtonText: 'No, cancelar',
+                      reverseButtons: true,
+                      allowOutsideClick: false,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        // Realizar la acción de borrado
+                        swalWithBootstrapButtons.fire({
+                          title: 'Deleted',
+                          text: 'La devolución fue eliminada con éxito :)',
+                          icon: 'success',
+                          showConfirmButton: true,
+                          allowOutsideClick: false,
+                        }).then(() => {
+                          // Redireccionar a la URL después de mostrar el mensaje y esperar 1 segundo
+                          setTimeout(function() {
+                            window.location.href = "{% url 'borrarDevoluciones' id=devolucion.id %}";
+                          });
+                        });
+                      } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                          title: 'Cancelado',
+                          text: 'La devolución no fue eliminada :)',
+                          icon: 'error',
+                          showCancelButton: false, // Ocultar el botón de cancelar
+                          showCloseButton: true, // Mostrar el botón "Cerrar"
+                        }).then(() => {
+                          // Redireccionar a la URL después de que se muestre el mensaje
+                          window.location.href = "{% url 'devoluciones' %}";
+                        });
+                      }
+                    });
+                  });
+                });
+              </script>
+
             {% endfor %}
           </tbody>
         </table>
       </div>
     </div>
-
-
+    <script>
+      $(document).ready(function() {
+        $('#id_id_venta').change(function() {
+          var id_venta = $(this).val();
+          $.ajax({
+            type: 'GET',
+            url: '/get_nombre_producto/',
+            data: {
+              'id': id_venta
+            },
+            dataType: 'json',
+            success: function(data) {
+              $('#id_id_producto').val(data.id_producto);
+              $('#id_producto').text(data.id_producto); // Actualiza el contenido del span con el ID del producto
+              $('#id_nombre_producto').text(data.nombre_producto);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+              console.log('Error:', errorThrown);
+            }
+          });
+        });
+      });
+    </script>
+    
+    
   {% else %}
-    <p>No hay productos disponibles.</p>
+    <p>No hay devolucion ingresadas.</p>
   {% endif %}
-<a href="{%url 'ingresarDevoluciones'%}" class="btn btn-primary">Ingresar Devoluciones</a>
+  <a href="{% url 'ingresarDevoluciones' %}" class="btn btn-primary">Ingresar Devoluciones</a>
 {% endblock %}

@@ -1,0 +1,52 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Ingreso de productos
+{% endblock title %}
+
+{% block contenido %}
+
+<div class="container card mt-5">
+    {{ error }}
+
+    <form method="POST" class="my-3" id="ingresarProductosForm">
+        <div class="card-title display-4 mb-5">Ingresar Producto</div>
+        <div class="card-body">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <a href="{% url 'nombreProductos' %}" class="btn btn-dark">
+                Volver
+            </a>
+            <button class="btn btn-primary float-right" type="submit">
+                Ingresar
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('ingresarProductosForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Detener el envío del formulario
+
+        showAlertAfterSubmit();
+    });
+
+    function showAlertAfterSubmit() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Cambios guardados con éxito',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            // Enviar el formulario después de mostrar la alerta y esperar 1 segundo
+            setTimeout(function() {
+                document.getElementById('ingresarProductosForm').submit();
+            });
+        });
+    }
+</script>
+
+{% endblock %}

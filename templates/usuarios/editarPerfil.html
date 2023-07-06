@@ -1,0 +1,65 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Editar Perfil
+{% endblock title %}
+
+{% block contenido %}
+<div class="col-md-7">
+  <div class="card">
+    <div class="card-header">
+        <h1 class="card-title display-4">Editar Perfil</h1>
+    </div>
+    <div class="card-body ">
+        <form method="POST" class="needs-validation" novalidate id="editar-perfil-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" class="form-control" value="{{ user.first_name }}" name="first_name">
+            </div>
+            
+            <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" class="form-control" value="{{ user.last_name }}" name="last_name">
+            </div>
+            
+            <div class="form-group">
+                <label for="correo-electronico">Correo electrónico:</label>
+                <input type="email" id="correo-electronico" class="form-control" value="{{ user.username }}" name="username">
+            </div>
+            
+            <!-- Agrega más campos según los datos que desees editar -->
+            <a href="{% url 'perfil' %}" class="btn btn-dark">
+                Volver
+            </a>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+</div>
+
+<script>
+    document.getElementById('editar-perfil-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Detener el envío del formulario
+
+        showAlertAfterSubmit();
+    });
+
+    function showAlertAfterSubmit() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Cambios guardados con exito',
+            showConfirmButton: false,
+            timer: 1500
+        });
+        
+        // Enviar el formulario después de mostrar la alerta
+        setTimeout(function() {
+            document.getElementById('editar-perfil-form').submit();
+        }, 1100);
+    }
+</script>
+
+{% endblock contenido %}

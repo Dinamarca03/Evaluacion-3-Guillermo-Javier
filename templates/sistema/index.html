@@ -1,9 +1,32 @@
 {% extends "sistema/base.html" %}
 
 {% block title %}
-Mi sitio web
+Menu sistemas bambini
 {% endblock title %}
 
 {% block contenido %}
   <h1 class="display-1">Sistema Bambini</h1>
+
+  <!-- carga de imagenes -->
+  <div class="page-header align-items-start min-vh-100" style="background-image: url('/static/img/onepice.jpg');"></div>
+
+
+  {% if messages %}
+    {% for message in messages %}
+      <script>
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: "{{ message }}",
+          showConfirmButton: false,
+          timer: 5000
+        });
+      </script>
+    {% endfor %}
+  {% endif %}
+
+
+
+
+
 {% endblock contenido %}

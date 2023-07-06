@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png'%}">
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png'%}">
     <title>
-       {% block title %} Página base {%endblock title%}
+       {% block title %} Sistema Bambini {% endblock title%}
     </title>
     <!--     Fonts and icons     -->
     <link rel="stylesheet" type="text/css"
@@ -33,62 +33,51 @@
     integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <!-- CSS datatable -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
+    <script src="{% static 'js/prueba.js' %}"></script><!-- prueba -->
+    
+
+    
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
 
     <!-- Se añáde el aside desde menus/aside -->
-    {%block aside%}
+    {% block aside %}
     {% include 'menus/aside.html' %}
-    {%endblock aside%}
+    {% endblock aside %}
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
 
-        {%block navbar%}
+        {% block navbar %}
         {% include 'menus/navbar.html' %}
-        {%endblock navbar%}
+        {% endblock navbar %}
 
         <div class="container-fluid py-4">
 
-            {%block contenido%}
+            {% block contenido %}
 
-            {%endblock contenido%}
+            {% endblock contenido %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
             <!-- footer -->
-            {%block footer%}
+            {% block footer %}
             {% include 'menus/footer.html' %}
-            {%endblock footer%}
+            {% endblock footer %}
         </div>
       
     </main>
 
     <!-- pluggins -->
-    {%block pluggin%}
+    {% block pluggin %}
     {% include 'menus/pluggin.html' %}
-    {%endblock pluggin%}
+    {% endblock pluggin %}
     
     <!--   Core JS Files   -->
     <script src="{% static 'js/core/popper.min.js'%}"></script>
@@ -110,24 +99,31 @@
     <script src="{% static 'js/material-dashboard.min.js'%}"></script>
 
     
-<!-- Necesario para el datable -->
-    </footer>
-
+    <!-- Necesario para el datable -->
     <!-- Bootstrap JavaScript Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
     integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-  </script>
+    </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
     integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-  </script>
-  <!-- JQery CDN !--> 
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-  <!-- JS DataTable !-->
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
-    <!-- Inicializacion JS !--> 
-  <script src={%static 'js/datatable.js'%}>  </script>
+    </script>
     
+    <!-- JQery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    
+    <!-- JS DataTable -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    
+    <!-- Inicializacion JS -->
+    <script src="{% static 'js/datatable.js'%}"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="{% static 'js/SweetAlert.js'%}"></script>
+
+    
+
 </body>
 
 </html>

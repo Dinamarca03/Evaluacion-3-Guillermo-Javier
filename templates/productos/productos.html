@@ -1,47 +1,160 @@
 {% extends "sistema/base.html" %}
 
 {% block title %}
-Bambini
+Stock
 {% endblock %}
+{% load static %}
 
 {% block contenido %}
-  <h1>Productos</h1>
 
-  {% if productos %}
-    <div class="container text-center">
-      <div class="table-responsive bg-light mb-3">
-        <table id="example" class="table table-secondary display" style="width:100%">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Tipo de producto</th>
-              <th scope="col">Valor unitario</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for producto in productos %}
-              <tr>
-                <td scope="row">{{ producto.id }}</td>
-                <td scope="row">{{ producto.nombre }}</td>
-                <td scope="row">{{ producto.tipo_producto }}</td>
-                <td scope="row">{{ producto.valor_unitario }}</td>
-                <td scope="row">{{ producto.cantidad }}</td>
-              
-                <td>
-                  <a href="{% url 'editarProductos' id=producto.id %}" class="btn btn-warning">Editar</a>
-                  <a href="{% url 'borrarProductos' id=producto.id %}" class="btn btn-primary">Borrar</a>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  {% else %}
-    <p>No hay productos disponibles.</p>
-  {% endif %}
-  <a href="{% url 'ingresarProductos' %}" class="btn btn-primary">Ingresar Producto</a>
+<h1>Stock de Productos</h1>
+
+
+{% if productos %}
+
+<div class="table-responsive bg-light mb-3">
+  <table id="example" class="table table-bordered table-striped" style="width:100%">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">ID Producto</th>
+
+          <th scope="col">Tipo de producto</th>
+          <th scope="col">Valor unitario</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Sucursal proveniente</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Hora</th>
+          <th scope="col">
+            {% if user.is_authenticated and user.rol.rol != 'US' %} 
+            Acción
+            {% endif %}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for producto in productos %}
+        <tr>
+          <td scope="row">{{ producto.id }}</td>
+          <td scope="row">{{ producto.nombre }}</td>
+          <td scope="row">{{ producto.id_producto}}</td>
+
+          <td scope="row">{{ producto.tipo_producto }}</td>
+          <td scope="row">{{ producto.valor_unitario }}</td>
+          <td scope="row">{{ producto.cantidad }}</td>
+          <td scope="row">{{ producto.sucursal}}</td>
+          <td scope="row">{{ producto.fecha}}</td>
+          <td scope="row">{{ producto.hora}}</td>
+
+          <td>
+            <div class="row">
+              <div class="col-5 ">
+                <form method="POST" action="{% url 'comprarProducto' producto.id %}">
+                    {% csrf_token %}
+                    <input type="number" name="cantidad" class="form-control form-control-sm" min="1" required value="{{ request.GET.cantidad|default:'' }}">
+                    <input type="hidden" name="accion" value="agregar">
+                    <button type="submit" class="btn btn-primary btn-sm">Agregar</button>
+                </form>
+            </div>
+            <div class="col-5 ">
+                <form method="POST" action="{% url 'comprarProducto' producto.id %}">
+                    {% csrf_token %}
+                    <input type="number" name="cantidad" class="form-control form-control-sm" min="1" required value="{{ request.GET.cantidad|default:'' }}">
+                    <input type="hidden" name="accion" value="descontar">
+                    <button type="submit" class="btn btn-primary btn-sm">Descontar</button>
+                </form>
+            </div>
+            {% if user.is_authenticated and user.rol.rol != 'US' %} 
+            <div class="row">
+              <div class="col-3 m-2">
+                <a href="{% url 'editarProductos' id=producto.id %}" class="btn btn-warning">Editar</a>
+              </div>
+              <div class="col-3 m-2">
+                <button href="#" id="confirmacionBorradoModal{{ producto.id }}" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionBorradoModal{{ producto.id }}">Borrar</button>
+              </div>
+            </div>
+            {% endif %}
+
+            
+            </div>
+          </td>
+        </tr>
+        <!-- alerta de confirmacion -->
+        <script>
+          $(document).ready(function() {
+            $('#confirmacionBorradoModal{{ producto.id }}').click(function() {
+              const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                  confirmButton: 'btn btn-success',
+                  cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+              });
+              swalWithBootstrapButtons.fire({
+                title: '¿Estás seguro de que deseas eliminar esta devolución?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, borrar',
+                cancelButtonText: 'No, cancelar',
+                reverseButtons: true,
+                allowOutsideClick: false,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Realizar la acción de borrado
+                  swalWithBootstrapButtons.fire({
+                    title: 'Deleted',
+                    text: 'La devolución fue eliminada con éxito :)',
+                    icon: 'success',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                  }).then(() => {
+                    // Redireccionar a la URL después de mostrar el mensaje y esperar 1 segundo
+                    setTimeout(function() {
+                      window.location.href = "{% url 'borrarProductos' id=producto.id %}";
+                    });
+                  });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                  swalWithBootstrapButtons.fire({
+                    title: 'Cancelado',
+                    text: 'La devolución no fue eliminada :)',
+                    icon: 'error',
+                    showCancelButton: false, // Ocultar el botón de cancelar
+                    showCloseButton: true, // Mostrar el botón "Cerrar"
+                  }).then(() => {
+                    // Redireccionar a la URL después de que se muestre el mensaje
+                    window.location.href = "{% url 'productos' %}";
+                  });
+                }
+              });
+            });
+          });
+        </script>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+<p>No hay stock disponible.</p>
+{% endif %}
+
+
+
+{% if user.is_authenticated and user.rol.rol != 'US' %}
+        
+
+<a href="{% url 'ingresarProductos' %}" class="btn btn-primary">Ingresar stock</a>
+{% endif %} 
+
+{% if messages %}
+<div class="alert alert-danger">
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
 {% endblock %}

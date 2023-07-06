@@ -1,7 +1,8 @@
 {% extends "sistema/base.html" %}
 
+
 {% block title %}
-Bambini
+sucursal
 {% endblock %}
 
 {% block contenido %}
@@ -10,30 +11,95 @@ Bambini
   {% if sucursales %}
     <div class="container text-center">
       <div class="table-responsive bg-light mb-3">
-        <table id="example" class="table table-secondary display" style="width:100%">
+        <table id="example" class="table table-bordered table-striped" style="width:100%">
           <thead>
             <tr>
-              <th scope="col">ID</th>
+              <th scope="col">ID {{ sucu.id }}</th>
+              <th scope="col">ID Sucursal</th>
               <th scope="col">nombre sucursal</th>
               <th scope="col">Direccion</th>
               <th scope="col">numero de telefono</th>
-              <th scope="col">Acción</th>
+              <th scope="col">
+                {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                Acción
+               {% endif %}
+              </th>
+              
             </tr>
           </thead>
           <tbody>
-            {% for sucursal in sucursales %}
+            {% for sucu in sucursales %}
               <tr>
-                <td scope="row">{{ sucursal.id }}</td>
-                <td scope="row">{{ sucursal.nombre_sucursal }}</td>
-                <td scope="row">{{ sucursal.direccion }}</td>
-                <td scope="row">{{ sucursal.numero_telefono }}</td>
-         
-                <td>
-                  <a href="{% url 'editarSucursales' id=sucursal.id %}" class="btn btn-warning">Editar</a> 
-                  <a href="{% url 'borrarSucursales' id=sucursal.id %}" class="btn btn-danger">Borrar</a>
+                <td scope="row">{{ sucu.id }}</td>
+                <td scope="row">{{ sucu.id_sucursal }}</td>
+                <th scope="col">{{ sucu.nombre}}</th>
+                <td scope="row">{{ sucu.direccion }}</td>
+                <td scope="row">{{ sucu.numero_telefono }}</td>
 
+                <td>
+                  {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                  <a href="{% url 'editarSucursales' id=sucu.id %}" class="btn btn-warning">Editar</a> 
+                  <a href="#" id="confirmacionBorradoModal{{ sucu.id }}" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionBorradoModal{{ sucu.id }}">Borrar</a>
+                  {% endif %}
+                  
                 </td>
               </tr>
+
+              <!-- alerta de confirmacion -->
+              <script>
+                $(document).ready(function() {
+                  $('#confirmacionBorradoModal{{ sucu.id }}').click(function() {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                      customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                        
+                      },
+                      buttonsStyling: false
+                    });
+              
+                    swalWithBootstrapButtons.fire({
+                      title: '¿Estás seguro de que deseas eliminar esta sucursal?',
+                      text: "¡No podrás revertir esto!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonText: 'Sí, borrar',
+                      cancelButtonText: 'No, cancelar',
+                      reverseButtons: true,
+                      allowOutsideClick: false,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        // Realizar la acción de borrado
+                        swalWithBootstrapButtons.fire({
+                          title: 'Borrado',
+                          text: 'La sucursal fue eliminado con éxito :)',
+                          icon: 'success',
+                          showConfirmButton: true,
+                          allowOutsideClick: false,
+                        }).then(() => {
+                          // Redireccionar a la URL después de mostrar el mensaje y esperar 1 segundo
+                          setTimeout(function() {
+                            window.location.href = "{% url 'borrarSucursales' id=sucu.id %}";
+                          });
+                        });
+                      } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                          title: 'Cancelado',
+                          text: 'La sucursal no fue eliminada :)',
+                          icon: 'error',
+                          showCancelButton: false, // Ocultar el botón de cancelar
+                          showCloseButton: true, // Mostrar el botón "Cerrar"
+                        }).then(() => {
+                          // Redireccionar a la URL después de que se muestre el mensaje
+                          window.location.href = "{% url 'sucursales' %}";
+                        });
+                      }
+                    });
+                  });
+                });
+              </script>
+              
+
             {% endfor %}
           </tbody>
         </table>
@@ -43,5 +109,12 @@ Bambini
     <p>No hay sucursales disponibles.</p>
   {% endif %}
   
-  <a href="{% url 'ingresarSucursales' %}" class="btn btn-primary">Ingresar sucursales</a>
+
+
+  {% if user.is_authenticated and user.rol.rol != 'US' %}
+
+  <a href="{% url 'ingresarSucursales' %}" class="btn btn-primary" >Ingresar sucursales</a>
+  {% endif %} 
+
+
 {% endblock %}

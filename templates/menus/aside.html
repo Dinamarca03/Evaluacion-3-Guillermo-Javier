@@ -3,48 +3,141 @@
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="https://demos.creative-tim.com/material-dashboard/pages/dashboard" target="_blank">
-            <img src="{% static 'img/logo-ct.png'%}" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold text-white">Productos Bambini</span>
+        <a class="navbar-brand m-0" href="/index">
+            <i class="material-icons text-white opacity-10">home</i>
+            <span class="ms-1 font-weight-bold text-white">Sistema Bambini</span>
         </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
+
+
+            <!-- Sucursales -->
             <li class="nav-item">
-                <a class="nav-link text-white" href="/sucursales/">
+                <a class="nav-link text-white" onclick="toggleSucursales()">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">dashboard</i>
+                        <i class="material-icons opacity-10">store</i>
                     </div>
-                    <span class="nav-link-text ms-1">Sucursales</span>
+                    <span class="nav-link-text ms-1 text-uppercase text-xs text-white font-weight-bolder opacity-8">Sistema</span>
                 </a>
+                <div id="Sucursales" style="display: none;">
+                    <div class="container">
+                        <a class="nav-link text-white" href="/sucursales/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">store</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Sucursales</span>
+                        </a>
+                        <a class="nav-link text-white" href="/viewCategoria/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">category</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Categoria</span>
+                        </a>
+                        <a class="nav-link text-white" href="/nombreProductos/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">list_alt</i>
+                                
+                            </div>
+                            <span class="nav-link-text ms-1">Productos</span>
+                        </a>
+                    </div>
+                </div>
             </li>
+            <!-- Mercaderia -->
             <li class="nav-item">
-                <a class="nav-link text-white" href="/productos/">
+                <a class="nav-link text-white" onclick="toggleMercaderia()">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">table_view</i>
+                        <i class="material-icons opacity-10">shopping_cart</i>
                     </div>
-                    <span class="nav-link-text ms-1">Productos</span>
+                    <span class="nav-link-text ms-1 text-uppercase text-xs text-white font-weight-bolder opacity-8">Mercaderia</span>
                 </a>
+                <div id="Mercaderia" style="display: none;">
+                    <div class="container">
+                        <a class="nav-link text-white" href="/productos/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">inventory</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Stock</span>
+                        </a>
+                        <a class="nav-link text-white" href="/historialentrada/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">file_download</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Historial de entradas</span>
+                        </a>
+                        <a class="nav-link text-white" href="/salidaProductos/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">file_upload</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Historial de salidas</span>
+                        </a>
+                        <a class="nav-link text-white" href="/devoluciones/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">sync</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Devoluciones</span>
+                        </a>
+                        {% if user.is_authenticated and user.rol.rol != 'US' %}
+        
+                        <a class="nav-link text-white" href="/reportes/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">assignment</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Reportes</span>
+                        </a>
+                        {% endif %} 
+
+                    </div>
+                </div>
             </li>
+            <!-- Cuenta -->
             <li class="nav-item">
-                <a class="nav-link text-white" href="/devoluciones/">
+                <a class="nav-link text-white" onclick="toggleCuenta()">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+                        <i class="material-icons opacity-10">account_circle</i>
                     </div>
-                    <span class="nav-link-text ms-1">Devoluciones</span>
+                    <span class="nav-link-text ms-1 text-uppercase text-xs text-white font-weight-bolder opacity-8">Cuenta</span>
                 </a>
+                <div id="Cuenta" style="display: none;">
+                    <div class="container">
+                        <a class="nav-link text-white" href="/perfil/">
+                            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="material-icons opacity-10">person</i>
+                            </div>
+                            <span class="nav-link-text ms-1">Mi perfil</span>
+                        </a>
+                        {% if user.is_authenticated and user.rol.rol != 'US' %}
+      
+                                <a class="nav-link text-white {% if request.path == '/registrar/' %}active{% endif %}" href="/registrar/">
+                                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                        <i class="material-icons opacity-10">person_add</i>
+                                    </div>
+                                    <span class="nav-link-text ms-1">Registrar usuarios</span>
+                                </a>
+                        {% endif %}
+
+                        {% if user.is_authenticated and user.rol.rol != 'US' %}
+                            <a class="nav-link text-white" href="/usuarios/">
+                                <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="material-icons opacity-10">groups</i>
+                                </div>
+                                <span class="nav-link-text ms-1">Ver usuarios</span>
+                            </a>
+                        {% endif %} 
+                    </div>
+                </div>
             </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
-            </li>
+
+
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{% url 'inicioSesion' %}">
+                    <a class="nav-link text-white" href="{% url 'cerrarSesion' %}">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">person</i>
+                            <i class="material-icons opacity-10">power_settings_new</i>
                         </div>
-                        <span class="nav-link-text ms-1">Cerrar Sesión</span>
+                        <span class="nav-link-text ms-1 text-uppercase text-xs text-white font-weight-bolder opacity-8">Cerrar Sesión</span>
                     </a>
                 </li>
             {% else %}
@@ -57,18 +150,42 @@
                     </a>
                 </li>
             {% endif %}
-            {% if user.is_authenticated and user.rol.rol != 'US' %}
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/registrar/">
-                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">assignment</i>
-                        </div>
-                        <span class="nav-link-text ms-1">Registrar</span>
-                    </a>
-                </li>
-            {% endif %}
+ 
+
         </ul>
     </div>
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
     </div>
+
+
+    <script>
+        function toggleSucursales() {
+            var extraContent = document.getElementById('Sucursales');
+            if (extraContent.style.display === 'none') {
+                extraContent.style.display = 'block';
+            } else {
+                extraContent.style.display = 'none';
+            }
+        }
+        function toggleMercaderia() {
+        var extraContent = document.getElementById('Mercaderia');
+        if (extraContent.style.display === 'none') {
+            extraContent.style.display = 'block';
+        } else {
+            extraContent.style.display = 'none';
+        } }
+        function toggleCuenta() {
+        var extraContent = document.getElementById('Cuenta');
+        if (extraContent.style.display === 'none') {
+            extraContent.style.display = 'block';
+        } else {
+            extraContent.style.display = 'none';
+        } }
+
+
+
+    </script>
+
 </aside>
+
+

@@ -1,0 +1,111 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Productos 
+{% endblock %}
+
+{% block contenido %}
+
+<h1>Productos</h1>
+  {% if nproductos %}
+    <div class="container text-center">
+
+      <div class="table-responsive bg-light mb-3">
+        <table id="example" class="table table-bordered table-striped" style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">nombreProducto</th>
+              <th scope="col">id_producto</th>
+              <th scope="col">
+                {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                  Acción
+                {% endif %}
+                
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for nproducto in nproductos %}
+              <tr>
+                <td scope="row">{{ nproducto.id }}</td>
+                <td scope="row">{{ nproducto.nombre_producto }}</td>
+                <td scope="row">{{ nproducto.id_producto }}</td>
+
+                <td>
+                  {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                  <a href="{% url 'editarNombreProductos' id=nproducto.id %}" class="btn btn-warning">Editar</a>
+                  <a href="#" id="confirmacionBorradoModal{{ nproducto.id }}" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionBorradoModal{{ nproducto.id }}">Borrar</a>
+                  {% endif %}
+                </td>
+              </tr>
+              
+              <!-- alerta de confirmacion -->
+              <script>
+                $(document).ready(function() {
+                  $('#confirmacionBorradoModal{{ nproducto.id }}').click(function() {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                      customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                        
+                      },
+                      buttonsStyling: false
+                    });     
+                    swalWithBootstrapButtons.fire({
+                      title: '¿Estás seguro de que deseas este producto?',
+                      text: "¡No podrás revertir esto!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonText: 'Sí, borrar',
+                      cancelButtonText: 'No, cancelar',
+                      reverseButtons: true,
+                      allowOutsideClick: false,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        // Realizar la acción de borrado
+                        swalWithBootstrapButtons.fire({
+                          title: 'Borrado',
+                          text: 'El producto fue eliminado con éxito :)',
+                          icon: 'success',
+                          showConfirmButton: true,
+                          allowOutsideClick: false,
+                        }).then(() => {
+                          // Redireccionar a la URL después de mostrar el mensaje y esperar 1 segundo
+                          setTimeout(function() {
+                            window.location.href = "{% url 'borrarNombreProducto' id=nproducto.id %}";
+                          });
+                        });
+                      } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                          title: 'Cancelado',
+                          text: 'El producto no fue eliminado :)',
+                          icon: 'error',
+                          showCancelButton: false, // Ocultar el botón de cancelar
+                          showCloseButton: true, // Mostrar el botón "Cerrar"
+                        }).then(() => {
+                          // Redireccionar a la URL después de que se muestre el mensaje
+                          window.location.href = "{% url 'nombreProductos' %}";
+                        });
+                      }
+                    });
+                  });
+                });
+              </script>
+              
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p>No hay productos disponibles.</p>
+  {% endif %}
+
+
+  {% if user.is_authenticated and user.rol.rol != 'US' %}
+
+  <a href="{% url 'ingresarNombreProductos' %}" class="btn btn-primary">Ingresar Producto</a>
+  {% endif %} 
+
+{% endblock %}

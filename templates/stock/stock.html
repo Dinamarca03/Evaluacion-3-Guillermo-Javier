@@ -1,0 +1,28 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock %}
+
+{% block contenido %}
+  <h1>Stock de productos</h1>
+
+  <table id="example" class="table table-secondary display" style="width:100%">
+    <thead>
+      <tr>
+        <th scope="col">Nombre del producto</th>
+        <th scope="col">Tipo del producto</th>
+        <th scope="col">Cantidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for producto in productos %}
+        <tr>
+          <td>{{ producto.nombre_producto.nombre }}</td>
+          <td>{{ producto.list.0.tipo_producto }}</td>
+          <td>{{ producto.list|length }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

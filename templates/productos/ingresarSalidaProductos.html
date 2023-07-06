@@ -1,0 +1,30 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Bambini
+{% endblock title %}
+
+{% block contenido %}
+
+<div class="container card mt-5">
+    {{ error }}
+    
+    <form method="POST" class="my-3">
+        <h1 class="text-center display-3 mb-5">Ingresar nueva salida de Productos</h1>
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <a href="{% url 'salidaProductos' %}" class="btn btn-dark">
+            Volver
+        </a>
+        <button class="btn btn-primary float-right">
+            Ingresar
+        </button>
+
+    </form>
+</div>
+
+
+{% endblock %}
+

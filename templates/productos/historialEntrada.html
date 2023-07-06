@@ -1,0 +1,58 @@
+{% extends "sistema/base.html" %}
+{% block title %}
+Entrada Productos
+{% endblock %}
+
+{% block contenido %}
+
+<div class="container card mt-5 text-center">
+  <h1 class="text-center display-3 mb-5">Historial de Entrada de productos</h1>
+
+  {% if entradas %}
+  <div class="table-responsive">
+    <table id="example" class="table table-bordered table-striped" style="width:100%">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">ID producto</th>
+          <th scope="col">Tipo de producto</th>
+          <th scope="col">Stock actual</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Hora</th>
+          <th scope="col">Cantidad ingresada</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entrada in entradas %}
+        <tr>
+          <td scope="row">{{ entrada.id }}</td>
+          <td scope="row">{{ entrada.nombre }}</td>
+          <td scope="row">{{ entrada.id_producto }}</td>
+          <td scope="row">{{ entrada.tipo_producto }}</td>
+          <td scope="row">{{ entrada.cantidad }}</td>
+          <td scope="row">{{ entrada.fecha}}</td>
+          <td scope="row">{{ entrada.hora}}</td>
+          <td scope="row">{{ entrada.cantidad_comprada}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    </div>
+
+
+    {% if user.is_authenticated and user.rol.rol != 'US' %}
+        
+    <div class="text-center mt-4">
+      <a href="{% url 'generar_reporte2' %}" class="btn btn-primary">Generar Reporte</a>
+    </div>
+    {% endif %} 
+  
+
+
+
+    {% else %}
+    <p>No hay entradas de productos registradas.</p>
+    {% endif %}
+</div>
+{% endblock %}

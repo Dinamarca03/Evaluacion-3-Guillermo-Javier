@@ -1,0 +1,62 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Mi Perfil
+{% endblock title %}
+
+{% block contenido %}
+<div class="col-md-7">
+  <div class="card">
+    <div class="card-header">
+        <h1 class="card-title display-4">Mi Perfil</h1>
+    </div>
+    <div class="card-body ">
+        <form method="POST" class="needs-validation" novalidate>
+            <!-- Mostrar datos del usuario -->
+            {% if user %}
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" class="form-control" value="{{ user.first_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" class="form-control" value="{{ request.user.last_name }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="correo-electronico">Correo electrónico:</label>
+                <input type="email" id="correo-electronico" class="form-control" value="{{ user.username }}" readonly>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-dark" onclick="toggleExtraContent()">Cambiar contraseña</button>
+                    <div id="extra-content" style="display: none;">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <a href="{% url 'editar_perfil'  %}" class="btn btn-primary">Editar mi perfil</a> 
+                </div>
+            </div>
+
+            
+        </form>
+    </div>
+
+</div>
+</div>
+
+<script>
+    function toggleExtraContent() {
+        var extraContent = document.getElementById('extra-content');
+        if (extraContent.style.display === 'none') {
+            extraContent.style.display = 'block';
+        } else {
+            extraContent.style.display = 'none';
+        }
+    }
+</script>
+
+{% endblock contenido %}

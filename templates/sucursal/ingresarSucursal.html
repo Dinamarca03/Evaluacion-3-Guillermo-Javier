@@ -5,25 +5,46 @@ Bambini
 {% endblock title %}
 
 {% block contenido %}
+<div class="container card mt-5">
+    {{ error }}
 
-<h1>Ingresar Sucursal</h1>
-
-<div class="container">
-    {{error}}
-    
-    <form method="POST"> 
+    <form method="POST" class="my-3" id="editar-perfil-form">
+        <h1 class="text-center display-3 mb-5">Ingresar Sucursal</h1>
         {% csrf_token %}
 
-        {{form.as_p}}
+        {{ form.as_p }}
 
-
-        <button>
+        <a href="{% url 'sucursales' %}" class="btn btn-dark">
+            Volver
+        </a>
+        <button class="btn btn-primary float-right" type="submit">
             Ingresar
         </button>
-        
+
     </form>
 </div>
 
+<script>
+    document.getElementById('editar-perfil-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Detener el envío del formulario
+
+        showAlertAfterSubmit();
+    });
+
+    function showAlertAfterSubmit() {
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Cambios guardados con éxito',
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        // Enviar el formulario después de mostrar la alerta
+        setTimeout(function() {
+            document.getElementById('editar-perfil-form').submit();
+        }, 1500);
+    }
+</script>
 
 {% endblock %}
-

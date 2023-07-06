@@ -1,0 +1,124 @@
+{% extends "sistema/base.html" %}
+
+{% block title %}
+Categorias
+{% endblock %}
+
+{% block contenido %}
+<h1>Categorias</h1>
+  {% if categorias %}
+    <div class="container text-center">
+      <div class="table-responsive bg-light mb-3">
+        <table id="example" class="table table-secondary display" style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nombre Categoria</th>
+              <th scope="col">ID Categoria</th>
+              <th scope="col">
+                {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                Acción
+                {% endif %}
+
+              </th>
+
+   
+
+
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for categoria in categorias %}
+              <tr>
+                <td scope="row">{{ categoria.id }}</td>
+                <td scope="row">{{ categoria.nombre_categoria }}</td>
+                <td scope="row">{{ categoria.id_categoria }}</td>
+
+                <td>
+
+                  {% if user.is_authenticated and user.rol.rol != 'US' %} 
+                  <div class="row">
+                    <div class="col-3 m-2">
+                      <a href="{% url 'editarCategoria' id=categoria.id %}" class="btn btn-warning">Editar</a>
+                    </div>
+                    <div class="col-3 m-2">
+                      <button href="#" id="confirmacionBorradoModal{{ categoria.id }}" class="btn btn-danger" data-toggle="modal" data-target="#confirmacionBorradoModal{{ categoria.id }}">Borrar</button>
+                    </div>
+                  </div>
+                  {% endif %}
+                </td>
+
+
+              
+              <!-- alerta de confirmacion -->
+              <script>
+                $(document).ready(function() {
+                  $('#confirmacionBorradoModal{{ categoria.id }}').click(function() {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                      customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                        
+                      },
+                      buttonsStyling: false
+                    });     
+                    swalWithBootstrapButtons.fire({
+                      title: '¿Estás seguro de que deseas este producto?',
+                      text: "¡No podrás revertir esto!",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonText: 'Sí, borrar',
+                      cancelButtonText: 'No, cancelar',
+                      reverseButtons: true,
+                      allowOutsideClick: false,
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        // Realizar la acción de borrado
+                        swalWithBootstrapButtons.fire({
+                          title: 'Borrado',
+                          text: 'El producto fue eliminado con éxito :)',
+                          icon: 'success',
+                          showConfirmButton: true,
+                          allowOutsideClick: false,
+                        }).then(() => {
+                          // Redireccionar a la URL después de mostrar el mensaje y esperar 1 segundo
+                          setTimeout(function() {
+                            window.location.href = "{% url 'borrarCategoria' id=categoria.id %}";
+                          });
+                        });
+                      } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        swalWithBootstrapButtons.fire({
+                          title: 'Cancelado',
+                          text: 'El producto no fue eliminado :)',
+                          icon: 'error',
+                          showCancelButton: false, // Ocultar el botón de cancelar
+                          showCloseButton: true, // Mostrar el botón "Cerrar"
+                        }).then(() => {
+                          // Redireccionar a la URL después de que se muestre el mensaje
+                          window.location.href = "{% url 'viewCategoria' %}";
+                        });
+                      }
+                    });
+                  });
+                });
+              </script>
+              
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% else %}
+    <p>No hay categorias disponibles.</p>
+  {% endif %}
+
+  {% if user.is_authenticated and user.rol.rol != 'US' %}
+
+  <a href="{% url 'ingresarCategoria' %}" class="btn btn-primary">Ingresar Categoria</a>
+  {% endif %} 
+
+
+
+  
+{% endblock %}
